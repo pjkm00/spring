@@ -1,0 +1,15 @@
+package kr.or.dw.service;
+
+import java.sql.SQLException;
+
+import javax.servlet.http.HttpSession;
+
+public class MemberServiceImpl implements MemberService{
+
+	@Override
+	public void login(String id, String pwd, HttpSession session) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

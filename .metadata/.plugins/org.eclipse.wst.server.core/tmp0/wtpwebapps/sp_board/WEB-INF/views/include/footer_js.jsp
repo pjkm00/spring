@@ -50,8 +50,12 @@
 			renewURL = renewURL.substring(0, renewURL.indexOf(".do") + 3);
 			console.log(renewURL);
 		};
-		
-		$('#if_list').prop('src', "<%=request.getContextPath()%>" + murl);
+		console.log(murl);
+		if(murl != "/main.do"){
+			$('#if_list').prop('src', "<%=request.getContextPath()%>" + murl);
+		}else{
+			$('#if_list').prop('src', "");
+		}
 	}
 	
 </script>

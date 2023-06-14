@@ -51,7 +51,7 @@
 			console.log(renewURL);
 		};
 		console.log(murl);
-		if(murl != "/main.do"){
+		if(murl != null){
 			$('#if_list').prop('src', "<%=request.getContextPath()%>" + murl);
 		}else{
 			$('#if_list').prop('src', "");

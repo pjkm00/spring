@@ -46,7 +46,7 @@ body.login-page{
 					<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 				</div>
 				<div class="form-group has-feedback">
-					<input type="password" class="form-control" name="pwd" placeholder="패스워드를 입력하세요."  value="mimi">
+					<input type="password" class="form-control" name="pwd" placeholder="패스워드를 입력하세요.">
 					<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 				</div>
 				<div class="row">

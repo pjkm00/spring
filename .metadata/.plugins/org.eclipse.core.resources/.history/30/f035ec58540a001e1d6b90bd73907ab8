@@ -1,0 +1,16 @@
+package kr.or.dw.service;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.dw.vo.MenuVO;
+
+public class MenuServiceImpl implements MenuService{
+
+	@Override
+	public List<MenuVO> selectMainMenuList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

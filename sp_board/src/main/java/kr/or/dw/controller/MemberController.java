@@ -23,7 +23,7 @@ public class MemberController {
 	
 	@RequestMapping("/main")
 	public String main() {
-		String url = "/member/main";
+		String url = "/member/main.open";
 		return url;
 	}
 	

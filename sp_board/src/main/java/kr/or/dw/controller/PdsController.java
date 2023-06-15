@@ -24,7 +24,7 @@ public class PdsController {
 	
 	@RequestMapping("/main")
 	public String main() {
-		String url = "/pds/main";
+		String url = "/pds/main.open";
 		return url;
 	}
 	

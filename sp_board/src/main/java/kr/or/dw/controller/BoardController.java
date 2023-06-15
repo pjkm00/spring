@@ -24,7 +24,7 @@ public class BoardController {
 	
 	@RequestMapping("/main")
 	public String main() {
-		String url = "/board/main";
+		String url = "/board/main.open";
 		return url;
 	}
 	

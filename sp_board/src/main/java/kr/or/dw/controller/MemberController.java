@@ -1,5 +1,6 @@
 package kr.or.dw.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -27,11 +28,16 @@ public class MemberController {
 		return url;
 	}
 	
-//	@RequestMapping("/list")
-//	public ModelAndView getmemberList(){
-//		String url = "";
-//		
-//		return url;
-//	}
+	@RequestMapping("/list")
+	public ModelAndView list(ModelAndView mnv) throws SQLException{
+		String url = "/member/list.open";
+		List<MemberVO> memList = null;
+		memList = memberService.getMemberList();
+
+		mnv.addObject("memberList", memList);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
 	
 }

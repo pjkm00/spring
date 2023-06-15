@@ -1,6 +1,7 @@
 package kr.or.dw.service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -27,6 +28,14 @@ public class MemberServiceImpl implements MemberService{
 			session.setMaxInactiveInterval(5*60);
 		}
 		
+	}
+
+
+	@Override
+	public List<MemberVO> getMemberList() throws SQLException {
+		List<MemberVO> memList = null;
+		memList = memberDAO.getMemberList();
+		return memList;
 	}
 
 }

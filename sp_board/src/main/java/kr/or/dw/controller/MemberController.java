@@ -40,4 +40,10 @@ public class MemberController {
 		return mnv;
 	}
 	
+	//회원등록
+	@RequestMapping("/registForm")
+	public String registForm() {
+		String url = "/member/regist.open";
+		return url;
+	}
 }

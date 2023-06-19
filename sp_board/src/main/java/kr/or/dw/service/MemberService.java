@@ -14,4 +14,7 @@ public interface MemberService {
 
 	//회원정보 조회
 	List<MemberVO> getMemberList() throws SQLException;
+
+	//아이디 중복확인
+	MemberVO selectMemberById(String id) throws SQLException;
 }

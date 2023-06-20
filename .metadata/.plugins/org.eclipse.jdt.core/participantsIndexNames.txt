@@ -17,6 +17,8 @@ C:\김민경\spring\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\138180
 \sp_board\src\main\java
 C:\김민경\spring\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1072812199.index
 \sp_security\src\main\java
+C:\김민경\spring\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3628565678.index
+\sp_board\src\main\java
 C:\김민경\스프링\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3484849153.index
 \sp_board\src\main\java
 C:\김민경\spring\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1522409000.index

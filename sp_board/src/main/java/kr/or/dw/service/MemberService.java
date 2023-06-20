@@ -17,4 +17,7 @@ public interface MemberService {
 
 	//아이디 중복확인
 	MemberVO selectMemberById(String id) throws SQLException;
+
+	//회원등록
+	void regist(MemberVO member) throws SQLException;
 }

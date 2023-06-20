@@ -1,17 +1,30 @@
 package kr.or.dw.controller;
 
+import java.awt.Image;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.or.dw.command.MemberRegistCommand;
 import kr.or.dw.service.MemberService;
 import kr.or.dw.vo.MemberVO;
 
@@ -50,11 +64,28 @@ public class MemberController {
 		return mnv;
 	}
 	
-	//회원등록
+	//회원등록 양식
 	@RequestMapping("/registForm")
 	public String registForm() {
 		String url = "/member/regist.open";
 		return url;
+	}
+	
+	//회원등록
+	@RequestMapping("/regist")
+	public void regist(MemberRegistCommand memberReq, HttpServletRequest req, HttpServletResponse res) throws Exception {
+		MemberVO member = memberReq.toMemberVO();
+		
+		memberService.regist(member);
+		
+		res.setContentType("text/html; charset=utf-8");
+		PrintWriter out = res.getWriter();
+		out.println("<script>");
+		out.println("alert('회원등록이 정상적으로 되었습니다.')");
+		out.println("window.opener.location.href='" + req.getContextPath() + "/member/list.do';");
+		out.println("window.close();");
+		out.println("</script>");
+		
 	}
 	
 	//아이디 중복 확인
@@ -133,4 +164,31 @@ public class MemberController {
 		
 		return fileName;
 	}
+	
+	@RequestMapping("/detail")
+	public ModelAndView detail(String id, ModelAndView mnv, HttpServletResponse res) throws Exception {
+		
+		MemberVO member = memberService.selectMemberById(id);
+
+		String url = "/member/detail.open";
+		mnv.addObject("member", member);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	ServletContext sc;
+	
+	@RequestMapping("/detailPictureView")
+	public ResponseEntity<byte[]> getImageAsResponseEntity(String picture) throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		InputStream in = sc.getResourceAsStream("c:/member/picture/upload/" + picture);
+		byte[] media = IOUtils.toByteArray(in);
+		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+		
+		ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(media, headers, HttpStatus.OK);
+		return responseEntity;
+	}
+	
 }
+

@@ -5,6 +5,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jquery/jquery.min.js"></script>
 <script>
@@ -25,7 +26,10 @@
     	<section class="content">
     	  <div class="card">    		
     	  	<div class="card-header with-border">
-    	  		<button type="button" class="btn btn-primary" onclick="OpenWindow('registForm.do', '회원등록', 650, 750);">회원등록</button>
+    	  		<sec:authorize access="hasAnyRole('ROLE_ADMIN, ROLE_MANAGER')">
+	    	  		<button type="button" class="btn btn-primary" onclick="OpenWindow('registForm.do', '회원등록', 650, 750);">회원등록</button>
+    	  		</sec:authorize>
+    	  	
     	  		<div id="keyword" class="card-tools" style="width:550px;">
 				  <div class="input-group row">	
 				  <!-- sort num -->
@@ -69,7 +73,7 @@
 		               	<c:forEach items="${memberList }" var="member">
 			               	<tr>
 			               		<td>
-			               			<a href="">${member.id}</a>
+			               			<a href="#" onclick="OpenWindow('detail.do?id=${member.id}', '회원세부정보', 650, 750);">${member.id}</a>
 			               			
 			               		</td>
 			               		<td>

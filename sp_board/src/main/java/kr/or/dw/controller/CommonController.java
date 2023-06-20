@@ -1,8 +1,11 @@
 package kr.or.dw.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -41,15 +44,48 @@ public class CommonController {
 		
 	}
 	
-	@RequestMapping("/common/login")
-	public String login(String id, String pwd, HttpSession session) throws SQLException{
-		String url = "redirect:/index.do";
+//	@RequestMapping("/common/login")
+//	public String login(String id, String pwd, HttpSession session) throws SQLException{
+//		String url = "redirect:/index.do";
+//		
+//		memberService.login(id, pwd, session);
+//		
+//		return url;
+//	}
+	
+	@RequestMapping("/security/accessDenied")
+	public String accessDenied(HttpServletResponse res) throws Exception{
+		String url = "security/accessDenied.open";
 		
-		memberService.login(id, pwd, session);
-		
-		
+		res.setStatus(302);
 		
 		return url;
+	}
+	
+	@RequestMapping("/common/loginTimeOut")
+	public void loginTimeOut(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		
+		res.setContentType("text/html; charset=utf-8");
+		PrintWriter out = res.getWriter();
+		
+		out.println("<script>");
+		out.println("alert('세션이 만료되었습니다. \\n다시 로그인하세요!')");
+		out.println("location.href='" + req.getContextPath() + "';");
+		out.println("</script>");
+
+	}
+	
+	@RequestMapping("/common/loginExpired")
+	public void loginExpired(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		
+		res.setContentType("text/html; charset=utf-8");
+		PrintWriter out = res.getWriter();
+		
+		out.println("<script>");
+		out.println("alert('중복로그인이 확인되었습니다. \\n 다시 로그인하면 다른 장치의 로그인은 해제됩니다.')");
+		out.println("location.href='" + req.getContextPath() + "';");
+		out.println("</script>");
+
 	}
 	
 	@RequestMapping("/index")

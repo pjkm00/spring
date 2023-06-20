@@ -4,12 +4,30 @@
 <form role="imageForm" action="upload/picture.do" method="post" enctype="multipart/form-data">
 	<input type="file" id="inputFile" style="display: none;" name="pictureFile" class="form-control" onchange="imageChange_go()">
 	<input type="hidden" value="" id="oldFile" name="oldPicture">
+	<input type="hidden" name="checkUpload" value="0">
 </form>
-
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
+
+	
+	let picture = $('input[name="picture"]').val();
+	function detailPictureView(){
+		$.ajax({
+			url : "<%=request.getContextPath()%>/member/detailPictureView.do",
+			data : picture,
+			type : "post",
+			success : function(res){
+				console.log(res);
+			},
+			error : function(error){
+				alert(error.status);
+			}
+		})
+	}
 
 	//사진이 변경됐을 때 
 	function imageChange_go(){
+		$('input[name="checkUpload"]').val(0);
 		preViewPicture($('input#inputFile')[0], $('div#pictureView'));
 	};
 	
@@ -33,8 +51,12 @@
 			processData : false,
 			contentType : false,
 			success : function(data){
+				//업로드 확인 변수 셋팅
+				$('input[name="checkUpload"]').val(1);
+				
 				//저장된 파일명 저장
 				$('input#oldFile').val(data);	//이미지 변경시 이것과 비교해서 다르다면 삭제될 파일명(전파일)
+				$('form[role="form"] input[name="picture"]').val(data);
 				
 				alert("이미지가 업로드 되었습니다.");
 			},
@@ -46,6 +68,9 @@
 		
 	};
 
+	//아이디 중복확인으로 확인된 아아디가 저장될 곳
+	let checkedID = "";
+	
 	function idCheck_go(){
 		let input_ID = $('#id');
 		
@@ -72,6 +97,8 @@
 			type : 'post',
 			success : function(result){
 				if(result){	//빈 스트링은 false 처리됨
+					checkedID = result;
+					$('input[name="id"]').val(checkedID);
 					alert("사용가능한 아이디 입니다.");
 				}else{
 					alert("중복된 아이디 입니다.");
@@ -83,6 +110,37 @@
 			}
 		});
 		
+	};
+	
+	function submit_go(){
+		let uploadCheck = $('input[name="checkUpload"]').val();
+		
+		if(!(uploadCheck > 0)){
+			alert("이미지 업로드는 필수입니다.");
+			return;
+		};
+		
+		if($('input[name="id"]').val() == ""){
+			alert("아이디는 필수입니다.");
+			return;
+		};
+		
+		if($('input[name="id"]').val() != checkedID){
+			alert("아이디 중복확인이 필요합니다.");
+			return;
+		};
+		
+		if($('input[name="pwd"]').val() == ""){
+			alert("비밀번호는 필수입니다.");
+			return;
+		};
+		
+		if($('input[name="name"]').val() == ""){
+			alert("이름은 필수입니다.");
+			return;
+		};
+		
+		$('form[role="form"]').submit();
 	};
 	
 </script>

@@ -34,7 +34,7 @@ window.onload = function(){
 	
 	//정지버튼 클릭
 	$('button#stopBtn').on('click', function(){
-		if(${member.enabled} == 1){
+		if('${member.enabled}' == 1){
 			location.href="<%=request.getContextPath()%>/member/stop.do?id=${member.id}";
 		}else{
 			location.href="<%=request.getContextPath()%>/member/stopCancel.do?id=${member.id}";

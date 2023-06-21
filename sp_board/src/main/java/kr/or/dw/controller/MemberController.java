@@ -232,8 +232,7 @@ public class MemberController {
 		PrintWriter out = res.getWriter();
 		out.println("<script>");
 		out.println("alert('정지해제가 되었습니다.')");
-		out.println("window.opener.location.href='" + req.getContextPath() + "/member/list.do';");
-		out.println("window.close();");
+		out.println("location.href='" + req.getContextPath() + "/member/detail.do?id=" + id +"';");
 		out.println("</script>");
 		out.close();
 	}

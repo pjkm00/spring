@@ -18,4 +18,16 @@ public interface MemberDAO {
 
 	//회원등록
 	void insertMember(MemberVO member) throws SQLException;
+
+	//회원수정
+	void updateMember(MemberVO member) throws SQLException;
+
+	//회원삭제
+	void deleteMember(String id) throws SQLException;
+
+	//회원정지
+	void stopMember(String id) throws SQLException;
+
+	//회원정지 해제
+	void stopCancelMember(String id) throws SQLException;
 }

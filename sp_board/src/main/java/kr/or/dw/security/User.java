@@ -41,7 +41,7 @@ public class User implements UserDetails{
 
 	@Override
 	public boolean isAccountNonLocked() {	//휴면계정여부
-		return member.getEnable() == 1;
+		return member.getEnabled() == 1;
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class User implements UserDetails{
 
 	@Override
 	public boolean isEnabled() {	//사용 제제 여부
-		return member.getEnable() == 1;
+		return member.getEnabled() == 1;
 	}
 	
 	public MemberVO getMemberVO() {

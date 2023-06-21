@@ -22,9 +22,10 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler{
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		out.print("<script>");
-		out.print("alert('" + exception.getMessage() + "')");
-		out.print("history.go(-1)");
+		out.print("alert('" + exception.getMessage() + "');");
+		out.print("history.go(-1);");
 		out.print("</script>");
+		out.close();
 	}
 	
 }

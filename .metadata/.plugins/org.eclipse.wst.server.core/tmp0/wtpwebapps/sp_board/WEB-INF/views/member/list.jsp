@@ -73,7 +73,7 @@
 		               	<c:forEach items="${memberList }" var="member">
 			               	<tr>
 			               		<td>
-			               			<a href="#" onclick="OpenWindow('detail.do?id=${member.id}', '회원세부정보', 650, 750);">${member.id}</a>
+			               			<a href="#" onclick="OpenWindow('detail.do?id=${member.id}', '회원상세보기',800, 700);">${member.id}</a>
 			               			
 			               		</td>
 			               		<td>

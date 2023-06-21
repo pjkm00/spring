@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="content-wrapper">
 	
@@ -18,9 +20,7 @@
 						<!-- 프로필 사진 선택 부분 -->
 						<div class="input-group mb-3">
 							<div class="mailbox-attachments clearfix" style="text-align: center; margin: 0 auto;">
-<%-- 								<div class="mailbox-attachment-icon has-img" id="pictureView" style="border: 1px solid green; height: 200px; width: 140px; margin: 0 auto; background-image: url('/picturePath/${member.picture}'); background-position : center; background-size : cover; background-repeat : no-repeat;"></div> --%>
-								<div class="mailbox-attachment-icon has-img" id="pictureView" style="border: 1px solid green; height: 200px; width: 140px; margin: 0 auto; background-position : center; background-size : cover; background-repeat : no-repeat;" onclick="detailPictureView();"></div>
-								<input type="hidden" name="picture" value="${member.picture}">
+								<div class="mailbox-attachment-icon has-img" id="pictureView" style="border: 1px solid green; height: 200px; width: 140px; margin: 0 auto;"></div>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -66,20 +66,31 @@
 								<input name="id" type="text" id="id" class="form-control" value="${member.phone}" readonly>
 							</div>
 						</div>
+<!-- 						<div class="form-group row"> -->
+<!-- 							<label for="id" class="col-sm-3" style="font-size: 0.9em;">주소 -->
+<!-- 							</label> -->
+<!-- 							<div class="col-sm-9 input-group input-group-sm"> -->
+<%-- 								<input name="id" type="text" id="id" class="form-control" value="${member.address}" readonly> --%>
+<!-- 							</div> -->
+<!-- 						</div> -->
 						
 						<div class="card-footer">
 							<div class="row">
+								<c:set var="visible" value="none"/>
+								<sec:authorize access="hasRole('ROLE_ADMIN')">
+									<c:set var="visible" value="visible"/>
+				    	  		</sec:authorize>
 								<div class="col-sm-3">
-									<button type="button" id="registBtn" class="btn btn-info" onclick="">수정</button>
+									<button type="button" id="modifyBtn" class="btn btn-info" style="display: ${visible};">수정</button>
 								</div>
 								<div class="col-sm-3">
-									<button type="button" id="registBtn" class="btn btn-danger" onclick="">삭제</button>
+									<button type="button" id="deleteBtn" class="btn btn-danger" style="display: ${visible};">삭제</button>
 								</div>
 								<div class="col-sm-3">
-									<button type="button" id="registBtn" class="btn btn-warning" onclick="">정지</button>
+									<button type="button" id="stopBtn" class="btn btn-warning" style="display: ${visible};">정지</button>
 								</div>
 								<div class="col-sm-3">
-									<button type="button" id="registBtn" class="btn btn-default" onclick="CloseWindow();">닫기</button>
+									<button type="button" id="listBtn" class="btn btn-default" onclick="CloseWindow();">닫기</button>
 								</div>
 								
 							</div>
@@ -92,7 +103,7 @@
 	</section>
 	
 </div>
-<%@ include file="regist_js.jsp" %>
+<%@ include file="detail_js.jsp" %>
 
 
 

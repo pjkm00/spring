@@ -9,21 +9,6 @@
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
 
-	
-	let picture = $('input[name="picture"]').val();
-	function detailPictureView(){
-		$.ajax({
-			url : "<%=request.getContextPath()%>/member/detailPictureView.do",
-			data : picture,
-			type : "post",
-			success : function(res){
-				console.log(res);
-			},
-			error : function(error){
-				alert(error.status);
-			}
-		})
-	}
 
 	//사진이 변경됐을 때 
 	function imageChange_go(){

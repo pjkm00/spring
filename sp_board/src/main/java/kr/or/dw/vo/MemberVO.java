@@ -11,7 +11,7 @@ public class MemberVO {
 	public String pwd;
 	public String email;
 	public String picture;
-	public int enable;
+	public int enabled;
 	public Date regdate;
 	public String phone;
 	public String name;

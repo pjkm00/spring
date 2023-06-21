@@ -31,7 +31,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 			throw new AuthenticationServiceException("Internal server error!!");
 		}
 		
-		if(member != null && login_pwd.equals(member.getPwd())){	//로그인 성공
+		if(member != null && login_pwd.equals(member.getPwd()) && 1 == member.getEnabled()){	//로그인 성공
 			
 			User authUser = new User(member);
 			
@@ -42,7 +42,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 			//리턴. default-target-url로 전송된다.
 			return result;
 				
-		}else {	//로그인 실패
+		}else if(0 == member.getEnabled()){	//로그인 실패
+			throw new BadCredentialsException("정지된 계정입니다.");
+		}else {
 			throw new BadCredentialsException("Bad ID or Password");
 		}
 		

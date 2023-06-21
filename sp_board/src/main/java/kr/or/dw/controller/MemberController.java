@@ -1,30 +1,24 @@
 package kr.or.dw.controller;
 
-import java.awt.Image;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.or.dw.command.MemberModifyCommand;
 import kr.or.dw.command.MemberRegistCommand;
 import kr.or.dw.service.MemberService;
 import kr.or.dw.vo.MemberVO;
@@ -85,7 +80,7 @@ public class MemberController {
 		out.println("window.opener.location.href='" + req.getContextPath() + "/member/list.do';");
 		out.println("window.close();");
 		out.println("</script>");
-		
+		out.close();
 	}
 	
 	//아이디 중복 확인
@@ -103,6 +98,144 @@ public class MemberController {
 		}
 		
 		return entity;
+	}
+	
+	@RequestMapping("/detail")
+	public ModelAndView detail(String id, ModelAndView mnv, HttpServletResponse res) throws Exception {
+		
+		MemberVO member = memberService.selectMemberById(id);
+
+		String url = "/member/detail.open";
+		mnv.addObject("member", member);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping("/modifyForm")
+	public ModelAndView modifyForm(String id, ModelAndView mnv) throws SQLException {
+		
+		MemberVO member = memberService.selectMemberById(id);
+
+		String url = "/member/modify.open";
+		mnv.addObject("member", member);
+		mnv.setViewName(url);
+		
+		return mnv; 
+	}
+	
+	@RequestMapping("/modify")
+	public void modify(MemberModifyCommand modifyReq, HttpServletRequest req, HttpServletResponse res) throws Exception {
+		MemberVO member = modifyReq.toParseMember();
+		
+		String fileName = savePicture(modifyReq.getPicture(), modifyReq.getOldPicture());
+		
+		member.setPicture(fileName);
+		
+		if(modifyReq.getPicture().isEmpty()) {
+			member.setPicture(modifyReq.getOldPicture());
+		};
+		
+		memberService.modify(member);
+		
+		res.setContentType("text/html; charset=utf-8");
+		PrintWriter out = res.getWriter();
+		out.println("<script>");
+		out.println("alert('수정되었습니다.');");
+		out.println("location.href='detail.do?id=" + member.getId() + "';");
+		out.println("window.opener.parent.location.reload();");
+		out.println("</script>");
+		out.close();
+		
+	}
+	
+	@RequestMapping("/delete")
+	public void delete(HttpServletRequest req, HttpServletResponse res, String id) throws Exception {
+		memberService.deleteMember(id);
+		
+		res.setContentType("text/html; charset=utf-8");
+		PrintWriter out = res.getWriter();
+		out.println("<script>");
+		out.println("alert('삭제되었습니다.')");
+		out.println("window.opener.location.href='" + req.getContextPath() + "/member/list.do';");
+		out.println("window.close();");
+		out.println("</script>");
+		out.close();
+		
+	}
+	
+	@RequestMapping("/remove")
+	public ModelAndView remove(String id, HttpSession session, ModelAndView mnv) throws SQLException {
+		String url = "/member/removeSuccess";
+		
+		MemberVO member = null;
+		
+		//이미지파일 삭제
+		member = memberService.selectMemberById(id);
+		
+		String savePath = this.picturePath;
+		File imageFile = new File(savePath, member.getPicture());
+		if(imageFile.exists()) {
+			imageFile.delete();
+		}
+		
+		memberService.deleteMember(id);
+		
+		//삭제되는 회원이 로그인한 회원인 경우 로그아웃 시켜야함.
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+		if(loginUser.getId().equals(member.getId())) {
+			session.invalidate();
+		};
+		
+		mnv.addObject("member", member);
+		mnv.setViewName(url);
+		
+		return mnv;
+		
+	}
+	
+//	@RequestMapping("/stop")
+//	public void stop(HttpServletRequest req, HttpServletResponse res, String id) throws Exception {
+//		memberService.stopMember(id);
+//		
+//		res.setContentType("text/html; charset=utf-8");
+//		PrintWriter out = res.getWriter();
+//		out.println("<script>");
+//		out.println("alert('정지되었습니다.')");
+//		out.println("window.opener.location.href='" + req.getContextPath() + "/member/list.do';");
+//		out.println("window.close();");
+//		out.println("</script>");
+//		out.close();
+//	}
+	@RequestMapping("/stop")
+	public ModelAndView stop(String id, HttpSession session, ModelAndView mnv) throws Exception {
+		String url = "/member/stopSuccess";
+		
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+		if(id.equals(loginUser.getId())) {
+			url = "/member/stopFail";
+		}else {
+			memberService.stopMember(id);
+		}
+		
+		mnv.addObject("id", id);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping("/stopCancel")
+	public void stopCancel(HttpServletRequest req, HttpServletResponse res, String id) throws Exception {
+		memberService.stopCancelMember(id);
+		
+		res.setContentType("text/html; charset=utf-8");
+		PrintWriter out = res.getWriter();
+		out.println("<script>");
+		out.println("alert('정지해제가 되었습니다.')");
+		out.println("window.opener.location.href='" + req.getContextPath() + "/member/list.do';");
+		out.println("window.close();");
+		out.println("</script>");
+		out.close();
 	}
 	
 	//사진 업로드
@@ -165,30 +298,27 @@ public class MemberController {
 		return fileName;
 	}
 	
-	@RequestMapping("/detail")
-	public ModelAndView detail(String id, ModelAndView mnv, HttpServletResponse res) throws Exception {
+	@RequestMapping("/getPicture")
+	public ResponseEntity<byte[]> getPicture(String picture) throws Exception{
+		InputStream in = null;
+		ResponseEntity<byte[]> entity = null;
+		String imgPath = this.picturePath;
 		
-		MemberVO member = memberService.selectMemberById(id);
-
-		String url = "/member/detail.open";
-		mnv.addObject("member", member);
-		mnv.setViewName(url);
+		try {
+			in = new FileInputStream(new File(imgPath, picture));
+			
+			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), HttpStatus.CREATED);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}finally {
+			in.close();
+		}
 		
-		return mnv;
+		return entity;
 	}
 	
-	ServletContext sc;
 	
-	@RequestMapping("/detailPictureView")
-	public ResponseEntity<byte[]> getImageAsResponseEntity(String picture) throws Exception {
-		HttpHeaders headers = new HttpHeaders();
-		InputStream in = sc.getResourceAsStream("c:/member/picture/upload/" + picture);
-		byte[] media = IOUtils.toByteArray(in);
-		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-		
-		ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(media, headers, HttpStatus.OK);
-		return responseEntity;
-	}
 	
 }
 

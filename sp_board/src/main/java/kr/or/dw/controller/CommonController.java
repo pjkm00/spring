@@ -69,9 +69,10 @@ public class CommonController {
 		PrintWriter out = res.getWriter();
 		
 		out.println("<script>");
-		out.println("alert('세션이 만료되었습니다. \\n다시 로그인하세요!')");
-		out.println("location.href='" + req.getContextPath() + "';");
+		out.println("alert('세션이 만료되었습니다. \\n다시 로그인하세요!');");
+		out.println("location.href='/';");
 		out.println("</script>");
+		out.close();
 
 	}
 	
@@ -82,10 +83,10 @@ public class CommonController {
 		PrintWriter out = res.getWriter();
 		
 		out.println("<script>");
-		out.println("alert('중복로그인이 확인되었습니다. \\n 다시 로그인하면 다른 장치의 로그인은 해제됩니다.')");
-		out.println("location.href='" + req.getContextPath() + "';");
+		out.println("alert('중복로그인이 확인되었습니다. \\n 다시 로그인하면 다른 장치의 로그인은 해제됩니다.');");
+		out.println("location.href='/';");
 		out.println("</script>");
-
+		out.close();
 	}
 	
 	@RequestMapping("/index")

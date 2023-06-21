@@ -18,4 +18,28 @@
 	<insert id="insertMember" parameterType="member">
 		INSERT INTO member VALUES(#{id}, #{pwd}, #{email}, #{picture}, 1, sysdate, #{phone}, #{name}, 'ADMIN', '', #{authority})
 	</insert>
+	
+	<update id="updateMember" parameterType="member" >
+		UPDATE member 
+		SET 
+			pwd = #{pwd}
+		  , email = #{email}
+		  , picture = #{picture}
+		  , phone = #{phone}
+		  , name = #{name}
+		  , authority = #{authority}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="deleteMember" parameterType="str">
+		DELETE member WHERE id = #{id}
+	</delete>
+	
+	<update id="stopMember" parameterType="str">
+		UPDATE member SET enabled = 0 WHERE id = #{id}
+	</update>
+	
+	<update id="stopCancelMember" parameterType="str">
+		UPDATE member SET enabled = 1 WHERE id = #{id}
+	</update>
 </mapper>

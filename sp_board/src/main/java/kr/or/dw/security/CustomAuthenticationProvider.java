@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -30,6 +31,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		} catch (SQLException e) {
 			throw new AuthenticationServiceException("Internal server error!!");
 		}
+		if(member == null) {
+			throw new BadCredentialsException("Bad ID or Password");
+		}
 		
 		if(member != null && login_pwd.equals(member.getPwd()) && 1 == member.getEnabled()){	//로그인 성공
 			
@@ -43,7 +47,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 			return result;
 				
 		}else if(0 == member.getEnabled()){	//로그인 실패
-			throw new BadCredentialsException("정지된 계정입니다.");
+			throw new DisabledException("정지된 계정입니다. \\n관리자에게 문의하세요");
 		}else {
 			throw new BadCredentialsException("Bad ID or Password");
 		}

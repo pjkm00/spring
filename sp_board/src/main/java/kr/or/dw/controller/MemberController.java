@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -29,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.or.dw.command.MemberModifyCommand;
 import kr.or.dw.command.MemberRegistCommand;
+import kr.or.dw.command.SearchCriteria;
 import kr.or.dw.service.MemberService;
 import kr.or.dw.vo.MemberVO;
 
@@ -48,12 +51,12 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/list")
-	public ModelAndView list(ModelAndView mnv) throws SQLException{
+	public ModelAndView list(ModelAndView mnv, SearchCriteria cri) throws SQLException{
 		String url = "/member/list.open";
-		List<MemberVO> memList = null;
-		memList = memberService.getMemberList();
+		
+		Map<String, Object> dataMap = memberService.getSearchMemberList(cri);
 
-		mnv.addObject("memberList", memList);
+		mnv.addAllObjects(dataMap);
 		mnv.setViewName(url);
 		
 		return mnv;
@@ -208,7 +211,7 @@ public class MemberController {
 //		out.close();
 //	}
 	@RequestMapping("/stop")
-	public ModelAndView stop(String id, HttpSession session, ModelAndView mnv) throws Exception {
+	public ModelAndView stop(String id, HttpSession session, ModelAndView mnv) throws SQLException {
 		String url = "/member/stopSuccess";
 		
 		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
@@ -219,22 +222,35 @@ public class MemberController {
 		}
 		
 		mnv.addObject("id", id);
+		mnv.addObject("msg", "정지");
 		mnv.setViewName(url);
 		
 		return mnv;
 	}
 	
+//	@RequestMapping("/stopCancel")
+//	public void stopCancel(HttpServletRequest req, HttpServletResponse res, String id) throws Exception {
+//		memberService.stopCancelMember(id);
+//		
+//		res.setContentType("text/html; charset=utf-8");
+//		PrintWriter out = res.getWriter();
+//		out.println("<script>");
+//		out.println("alert('정지해제가 되었습니다.')");
+//		out.println("location.href='" + req.getContextPath() + "/member/detail.do?id=" + id +"';");
+//		out.println("</script>");
+//		out.close();
+//	}
 	@RequestMapping("/stopCancel")
-	public void stopCancel(HttpServletRequest req, HttpServletResponse res, String id) throws Exception {
+	public ModelAndView stopCancel(String id, ModelAndView mnv) throws SQLException {
+		String url = "/member/stopSuccess";
+		
 		memberService.stopCancelMember(id);
 		
-		res.setContentType("text/html; charset=utf-8");
-		PrintWriter out = res.getWriter();
-		out.println("<script>");
-		out.println("alert('정지해제가 되었습니다.')");
-		out.println("location.href='" + req.getContextPath() + "/member/detail.do?id=" + id +"';");
-		out.println("</script>");
-		out.close();
+		mnv.addObject("id", id);
+		mnv.addObject("msg", "정지해제");
+		mnv.setViewName(url);
+		
+		return mnv;
 	}
 	
 	//사진 업로드

@@ -15,6 +15,48 @@
 		ORDER BY regdate DESC
 	</select>
 	
+<!-- 	<select id="getSearchMemberList" resultType="member"> -->
+<!-- 		SELECT * -->
+<!-- 		FROM member -->
+<!-- 		<if test="'i'.toString().equals(searchType)"> -->
+<!-- 			WHERE id like '%' || #{keyword} || '%' -->
+<!-- 		</if> -->
+<!-- 		<if test="'p'.toString().equals(searchType)"> -->
+<!-- 			WHERE phone like '%' || #{keyword} || '%' -->
+<!-- 		</if> -->
+<!-- 		<if test="'e'.toString().equals(searchType)"> -->
+<!-- 			WHERE email like '%' || #{keyword} || '%' -->
+<!-- 		</if> -->
+<!-- 		ORDER BY regdate DESC -->
+<!-- 	</select> -->
+
+	<sql id="search">
+		<if test="searchType == 'i'.toString()">
+			AND id like '%' || #{keyword} || '%'
+		</if>
+		<if test="searchType == 'p'.toString()">
+			AND phone like '%' || #{keyword} || '%'
+		</if>
+		<if test="searchType == 'e'.toString()">
+			AND email like '%' || #{keyword} || '%'
+		</if>
+	</sql>
+
+	<select id="getSearchMemberList" resultType="member">
+		SELECT *
+		FROM member
+		WHERE 1 = 1
+		<include refid="search"/>
+		ORDER BY regdate DESC
+	</select>
+	
+	<select id="selectSearchMemberListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM member
+		WHERE 1 = 1
+		<include refid="search"/>
+	</select>
+	
 	<insert id="insertMember" parameterType="member">
 		INSERT INTO member VALUES(#{id}, #{pwd}, #{email}, #{picture}, 1, sysdate, #{phone}, #{name}, 'ADMIN', '', #{authority})
 	</insert>

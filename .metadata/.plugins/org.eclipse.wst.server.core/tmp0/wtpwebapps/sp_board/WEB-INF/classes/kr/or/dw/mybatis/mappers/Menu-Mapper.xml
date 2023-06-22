@@ -17,4 +17,10 @@
 		ORDER BY mcode ASC
 	</select>
 	
+	<select id="selectMenuByMcode" parameterType="str" resultType="menu">
+		SELECT *
+		FROM menu
+		WHERE mcode = #{mcode}
+	</select>
+	
 </mapper>

@@ -2,9 +2,12 @@ package kr.or.dw.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
 
+import kr.or.dw.command.SearchCriteria;
 import kr.or.dw.vo.MemberVO;
 
 @Mapper
@@ -30,4 +33,10 @@ public interface MemberDAO {
 
 	//회원정지 해제
 	void stopCancelMember(String id) throws SQLException;
+
+	//회원 검색후 리스트
+	List<MemberVO> getSearchMemberList(SearchCriteria cri, RowBounds rowBounds) throws SQLException;
+
+	//회원검색후 갯수
+	int selectSearchMemberListCount(SearchCriteria cri) throws SQLException;
 }

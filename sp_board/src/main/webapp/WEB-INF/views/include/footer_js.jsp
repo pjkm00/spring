@@ -13,6 +13,8 @@
 	{{/each}} 
 </script>
 <script>
+
+
 	function printData(subMenuList, target, templateObj){
 		 let template = Handlebars.compile(templateObj.html());
 		 
@@ -23,6 +25,7 @@
 	}
 
 	function subMenu(mcode){
+		console.log(mcode);
 		if(mcode != 'M000000'){
 			$.ajax({
 				url : "<%=request.getContextPath()%>/common/subMenu.do?mcode=" + mcode,
@@ -62,11 +65,10 @@
 			history.pushState(mcode, null, renewURL);
 		};
 		console.log(murl);
-		if(murl != "/main.do"){
-			$('#if_list').prop('src', "<%=request.getContextPath()%>" + murl);
-		}else{
-			$('#if_list').prop('src', "");
-		}
-	}
+		$('#if_list').prop('src', "<%=request.getContextPath()%>" + murl);
+	};
+	
+	goPage('${menu.murl}', '${menu.mcode}');
+	subMenu('${menu.mcode}'.substring(0,3) + "0000");
 	
 </script>

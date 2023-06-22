@@ -87,7 +87,7 @@
 									<button type="button" id="deleteBtn" class="btn btn-danger" style="display: ${visible};">삭제</button>
 								</div>
 								<div class="col-sm-3">
-									<button type="button" id="stopBtn" class="btn btn-warning" style="display: ${visible};">정지</button>
+									<button type="button" id="stopBtn" class="btn btn-warning" style="display: ${visible};">${member.enabled == 1 ? '정지' : '해체' }</button>
 								</div>
 								<div class="col-sm-3">
 									<button type="button" id="listBtn" class="btn btn-default" onclick="CloseWindow();">닫기</button>

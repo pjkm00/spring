@@ -6,12 +6,6 @@
 window.onload = function(){
 	//프로필 이미지 불러오기
 	
-	if(${member.enabled} == 1){
-		$('button#stopBtn').text("정지");
-	}else{
-		$('button#stopBtn').text("해제");
-	}
-	
 	let imageURL = "getPicture.do?picture=${member.picture}";	//이미지명 가지고 와서 셋팅
 	$('div#pictureView').css({
 								 'background-image' : 'url(' + imageURL + ')',
@@ -34,7 +28,9 @@ window.onload = function(){
 	
 	//정지버튼 클릭
 	$('button#stopBtn').on('click', function(){
-		if('${member.enabled}' == 1){
+		let enabled = ${member.enabled};
+
+		if(enabled == 1){
 			location.href="<%=request.getContextPath()%>/member/stop.do?id=${member.id}";
 		}else{
 			location.href="<%=request.getContextPath()%>/member/stopCancel.do?id=${member.id}";

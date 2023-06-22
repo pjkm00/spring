@@ -2,9 +2,11 @@ package kr.or.dw.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import kr.or.dw.command.SearchCriteria;
 import kr.or.dw.vo.MemberVO;
 
 public interface MemberService {
@@ -32,4 +34,7 @@ public interface MemberService {
 
 	//회원정지해제
 	void stopCancelMember(String id) throws SQLException;
+
+	//회원검색하여 리스트
+	Map<String, Object> getSearchMemberList(SearchCriteria cri) throws SQLException;
 }

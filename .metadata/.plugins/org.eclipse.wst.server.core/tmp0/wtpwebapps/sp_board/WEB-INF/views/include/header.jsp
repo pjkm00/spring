@@ -29,9 +29,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <c:forEach items="${menuList}" var="menu">
+      <c:forEach items="${menuList}" var="me">
       	<li class="nav-item">
-      		<a href="javascript:subMenu('${menu.mcode }'); goPage('${menu.murl }', '${menu.mcode }');" class="nav-link">${menu.mname }</a>
+      		<a href="javascript:subMenu('${me.mcode }'); goPage('${me.murl }', '${me.mcode }');" class="nav-link">${me.mname }</a>
       	</li>
       </c:forEach>
     </ul>

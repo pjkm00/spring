@@ -42,5 +42,27 @@
 		<include refid="search"/>
 	</select>
 
+	<insert id="insertBoard" parameterType="board">
+		INSERT INTO board (bno, title, writer, content, regdate, viewcnt) 
+			VALUES (board_seq.nextval, #{title}, #{writer}, #{content}, sysdate, 0)
+	</insert>
 	
+	<select id="selectBoard" resultType="board" parameterType="int">
+		SELECT *
+		FROM board
+		WHERE bno = #{bno}
+	</select>
+	
+	<update id="increaseViewCnt" parameterType="int">
+		UPDATE board SET viewcnt = viewcnt + 1
+		WHERE bno = #{bno}
+	</update>
+	
+	<update id="updateBoard" parameterType="board">
+		UPDATE board SET title = #{title}, content = #{content}, updatedate = sysdate WHERE bno = #{bno}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		DELETE board WHERE bno = #{bno}
+	</delete>
 </mapper>

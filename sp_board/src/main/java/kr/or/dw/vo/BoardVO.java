@@ -7,13 +7,14 @@ import lombok.Data;
 @Data
 public class BoardVO {
 
-	public int bno;
-	public String title;
-	public String content;
-	public String writer;
-	public Date regdate;
-	public int viewcnt;
-	public Date updatedate;
+	private int bno;
+	private String title;
+	private String content;
+	private String writer;
+	private Date regdate;
+	private int viewcnt;
+	private Date updatedate;
+	private int replycnt;	//댓글개수
 	
 	public BoardVO() {};
 

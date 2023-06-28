@@ -15,6 +15,7 @@ import kr.or.dw.command.PageMaker;
 import kr.or.dw.command.SearchCriteria;
 import kr.or.dw.dao.BoardDAO;
 import kr.or.dw.dao.MemberDAO;
+import kr.or.dw.dao.ReplyDAO;
 import kr.or.dw.vo.BoardVO;
 import kr.or.dw.vo.MemberVO;
 
@@ -23,6 +24,9 @@ public class BoardServiceImpl implements BoardService{
 
 	@Autowired
 	private BoardDAO boardDAO;
+	
+	@Autowired
+	private ReplyDAO replyDAO;
 
 	@Override
 	public Map<String, Object> selectBoardList(SearchCriteria cri) throws SQLException {
@@ -35,6 +39,12 @@ public class BoardServiceImpl implements BoardService{
 		
 		//현재 페이지 번호에 맞는 리스트를 perPageNum 개수만큼 가져오기
 		boardList = boardDAO.selectSearchBoardList(cri, rowBounds);
+		
+		//reply count 입력
+		for(BoardVO board : boardList) {
+			int replycnt = replyDAO.countReply(board.getBno());
+			board.setReplycnt(replycnt);
+		}
 		
 		//전체 board 개수
 		int totalCount = boardDAO.selectSearchBoardListCount(cri);
@@ -50,6 +60,31 @@ public class BoardServiceImpl implements BoardService{
 		dataMap.put("pageMaker", pageMaker);
 		
 		return dataMap;
+	}
+
+	@Override
+	public void write(BoardVO board) throws SQLException {
+		boardDAO.insertBoard(board);
+	}
+
+	@Override
+	public BoardVO selectBoard(int bno) throws SQLException {
+		BoardVO board =  boardDAO.selectBoard(bno);
+		boardDAO.increaseViewCnt(bno);
+		
+		return board;
+	}
+
+	@Override
+	public void modify(BoardVO board) throws SQLException {
+		boardDAO.updateBoard(board);
+		
+	}
+
+	@Override
+	public void remove(int bno) throws SQLException {
+		boardDAO.deleteBoard(bno);
+		
 	}
 	
 	

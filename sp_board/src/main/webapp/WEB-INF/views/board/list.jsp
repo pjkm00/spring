@@ -54,10 +54,21 @@
 					<c:forEach var="board" items="${boardList }">
 						<tr style="font-size: 0.85em;">
 							<td>${board.bno }</td>
-							<td><a href="#" onclick="OpenWindow('detail.do?bno=${board.bno}', '글상세보기',800, 700);">${board.title }</a></td>
+							<td style="text-align:left;">
+								<a href="#" onclick="OpenWindow('detail.do?bno=${board.bno}', '글상세보기',800, 700);">
+									<span class="col-sm-12">${board.title }
+										<c:if test="${board.replycnt ne 0 }">
+											<span class="nav-item">&nbsp;&nbsp;
+												<i class="fa fa-comment"></i>
+												<span class="">${board.replycnt }</span>
+											</span>
+										</c:if>
+									</span>
+								</a>
+							</td>
 							<td>${board.writer }</td>
 							<td><fmt:formatDate value="${board.regdate}" pattern="yyyy-MM-dd" type="date"/></td>
-							<td>${board.viewcnt }</td>
+							<td><span class="badge bg-red">${board.viewcnt }</span></td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -68,4 +79,6 @@
 		</div>
 	</section>
 </div>
+
+
 	

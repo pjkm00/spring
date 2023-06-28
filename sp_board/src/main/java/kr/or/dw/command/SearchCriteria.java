@@ -38,10 +38,18 @@ public class SearchCriteria {
 		}
 	}
 	
+	public void setPage(int page) {	
+		this.page = page;
+	}
+	
 	public void setPerPageNum(String perPageNum) {	//스트링으로 넘어오는 것도 받을 수 있도록 set 메서드 하나 더 만듬
 		if(perPageNum != null && !perPageNum.isEmpty()) {
 			this.perPageNum = Integer.parseInt(perPageNum);
 		}
+	}
+	
+	public void setPerPageNum(int perPageNum) {
+		this.perPageNum = perPageNum;
 	}
 	
 

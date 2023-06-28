@@ -5,11 +5,20 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.dw.command.SearchCriteria;
+import kr.or.dw.vo.BoardVO;
 import kr.or.dw.vo.MenuVO;
 
 public interface BoardService {
 
 	Map<String, Object> selectBoardList(SearchCriteria cri) throws SQLException;
+
+	void write(BoardVO board) throws SQLException;
+
+	BoardVO selectBoard(int bno) throws SQLException;
+
+	void modify(BoardVO board) throws SQLException;
+
+	void remove(int bno) throws SQLException;
 
 
 }

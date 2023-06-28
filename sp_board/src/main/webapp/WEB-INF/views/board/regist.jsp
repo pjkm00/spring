@@ -32,7 +32,7 @@
 							<div class="form-group">
 								<label for="content">내 용</label>
 								<textarea class="textarea" name="content" id="content" rows="10" 
-									placeholder="1000자 내외로 작성하세요." style="display: block; width: 100%;"></textarea>
+									placeholder="1000자 내외로 작성하세요." style="display: block; width:100%;"></textarea>
 							</div>
 						</form>
 					</div>
@@ -43,32 +43,32 @@
 </div>
 
 <script>
-	window.onload = function(){
-		SmartEditor_summernote($('#content'));
-	}
+window.onload = function(){
+	SmartEditor_summernote($('#content'));
 	
-	//등록버튼 클릭
+	// 등록버튼 클릭
 	$('#registBtn').on('click', function(){
 		let form = $('form[role="form"]');
-		if(form.title.value == ""){
+		
+		if($('#title').val() == ""){
 			alert("제목은 필수입니다.");
 			return;
 		}
 		
-		if(form.content.value.length > 1000){
-			alert('글자수가 1000자를 초과할 수 없습니다.');
+		if($('#content').length > 1000){
+			alert("글자수가 1000자를 초과할 수 없습니다.");
 			return;
 		}
 		
 		form.submit();
-		
 	});
 	
-	//취소버튼 클릭
+	// 취소버튼 클릭
 	$('#cancelBtn').on('click', function(){
-		window.opener.location.href="list.do";
+		window.opener.location.href="list.do"
 		window.close();
-	})
+	});
+}
 </script>
 
-<%@ include file="/WEB-INF/views/common/summernote.jsp"%>
+<%@ include file="/WEB-INF/views/common/summernote.jsp" %>

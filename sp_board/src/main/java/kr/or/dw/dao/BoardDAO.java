@@ -17,4 +17,14 @@ public interface BoardDAO {
 
 	int selectSearchBoardListCount(SearchCriteria cri) throws SQLException;
 
+	void insertBoard(BoardVO board) throws SQLException;
+
+	BoardVO selectBoard(int bno) throws SQLException;
+
+	void increaseViewCnt(int bno) throws SQLException;
+
+	void updateBoard(BoardVO board) throws SQLException;
+
+	void deleteBoard(int bno) throws SQLException;
+
 }

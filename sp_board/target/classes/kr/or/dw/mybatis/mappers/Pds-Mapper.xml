@@ -9,4 +9,62 @@
 			FROM dual
 		</selectKey>
 	</insert>
+	
+	<sql id="search">
+		<if test="searchType == 't'.toString()">
+			AND title like '%' || #{keyword} || '%'
+		</if>
+		<if test="searchType == 'w'.toString()">
+			AND writer like '%' || #{keyword} || '%'
+		</if>
+		<if test="searchType == 'c'.toString()">
+			AND content like '%' || #{keyword} || '%'
+		</if>
+		<if test="searchType == 'tc'.toString()">
+			AND (title like '%' || #{keyword} || '%'
+			OR content like '%' || #{keyword} || '%')
+		</if>
+		<if test="searchType == 'cw'.toString()">
+			AND (writer like '%' || #{keyword} || '%'
+			OR content like '%' || #{keyword} || '%')
+		</if>
+		<if test="searchType == 'tcw'.toString()">
+			AND (title like '%' || #{keyword} || '%'
+			OR writer like '%' || #{keyword} || '%'
+			OR content like '%' || #{keyword} || '%')
+		</if>
+	</sql>
+	
+	<select id="selectSearchPdsList" resultType="pds">
+		SELECT *
+		FROM pds
+		WHERE 1=1
+		<include refid="search"/>
+		ORDER BY pno DESC
+	</select>
+	
+	<select id="selectSearchPdsListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM pds
+		WHERE 1=1
+		<include refid="search"/>
+	</select>
+	
+	<select id="selectPdsByPno" parameterType="int" resultType="pds">
+		SELECT *
+		FROM pds
+		WHERE pno = #{pno}
+	</select>
+	
+	<update id="increaseViewCnt" parameterType="int">
+		UPDATE pds SET viewcnt = viewcnt + 1 WHERE pno = #{pno}
+	</update>
+	
+	<update id="updatePds" parameterType="pds">
+		UPDATE pds SET title = #{title}, content = #{content}, updatedate = sysdate WHERE pno = #{pno}
+	</update>
+	
+	<delete id="deletePds" parameterType="int">
+		DELETE pds WHERE pno = #{pno}
+	</delete>
 </mapper>

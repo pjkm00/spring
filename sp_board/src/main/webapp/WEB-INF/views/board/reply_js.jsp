@@ -93,7 +93,7 @@
 				url : "<%=request.getContextPath()%>/replies/" + rno,
 				type : "put",
 				data : JSON.stringify({replytext : replytext, rno : rno}),
-				contentType : "application/json",
+// 				contentType : "application/json",
 				success : function(result){
 					alert("수정되었습니다.");
 					let curPage = $('#pagination').find('li.active').find('a').text();

@@ -9,6 +9,8 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <!-- iamport.payment.js -->
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>    
+ 
+    
     <div class="card text-center">
     <div class="card-header">
         결제하기
@@ -22,12 +24,8 @@
     </div>
 
 </div>
-<div class="portone-ui-container" data-portone-ui-type="">
-  <!-- 여기에 PG사 전용 버튼이 그려집니다 -->
-</div> 
+
 <script>
-
-
 
 const IMP = window.IMP;
 IMP.init("imp04352208");
